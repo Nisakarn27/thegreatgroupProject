@@ -1,0 +1,327 @@
+﻿@{
+    ViewBag.Title = "เปิดออร์เดอร์";
+    ViewBag.MainMenu = "ระบบจัดการข้อมูลลูกค้า";
+    Layout = "~/Views/Shared/_LayoutPartial.cshtml";
+}
+
+<div class="row bg-title">
+    <!-- .page title -->
+    <div class="col-md-5">
+        <ol class="breadcrumb pull-left">
+            <li><a href="#">@ViewBag.MainMenu</a></li>
+            <li class="active">@ViewBag.Title</li>
+        </ol>
+    </div>
+    <!-- /.page title -->
+    <a href="javascript:history.back();" class="btn btn-default pull-right m-l-20 hidden-xs hidden-sm waves-effect waves-light"><i class="fa fa-mail-reply"></i> ย้อนกลับ</a>
+</div>
+<div class="row">
+    
+    <div class="col-lg-12 ">
+
+        <div class="white-box">
+
+            <h3 class="m-b-0 m-t-0"> <i class="fa  fa-shopping-cart"></i> @ViewBag.Title</h3> <small class="text-muted db"></small>
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pull-left">
+                        <address>
+                            <div id="customerName"></div>
+                            <div id="customerAddress"></div>
+                        </address>
+                    </div>
+                    <div class="pull-right text-right">
+                        <address>
+                            @*<p class="m-t-10"><b>วันที่เปิด :</b> <i class="fa fa-calendar"></i> 25 กุมภาพันธ์ 2561</p>*@                         
+                            @*<p><b>วันที่ครบกำหนด :</b> <i class="fa fa-calendar"></i>  15 พฤษภาคม 2561</p>*@
+                            <p><b> การชำระเงิน :</b>   เงินสด</p>
+                        </address>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <br>
+                    <div class="clearfix"></div>
+                   
+                        <div class="row">
+                            
+                            <div class="col-md-6">
+                                <div class="dx-fieldset">
+                                    <div class="dx-field">
+                                        <div class="dx-field-label text-right">เพิ่มสินค้า : </div>
+                                        <div class="dx-field-value"><div class="lookup" id="product_name"></div></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+                                <div class="dx-fieldset">
+                                    <div class="dx-field">
+                                        <div class="dx-field-label text-right">จำนวน : </div>
+                                        <div class="dx-field-value" id="product_amount"></div>
+                                    </div>
+                                </div>
+
+                                </div>
+                            <div class="col-md-2">
+
+                                <div class="dx-fieldset">
+                                    <div class="dx-field">
+                                        <div class="dx-field-label"></div>
+                                        <div class="dx-field-value" ><button class="btn btn-success btn-sm" onclick="AddProduct()"> <i class="fa fa-plus"></i> เพิ่มสินค้า </button></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                
+</div>
+            </div>
+          
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div id="gridData">
+                    </div>
+
+                        
+                    </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                   
+                    <hr>
+                    <div class="text-right">
+
+                        <a id="print" class="btn btn-default btn-outline" href="javascript:history.back();"> <span><i class="fa fa-mail-reply"></i> ย้อนกลับ</span> </a>
+                        <a class="btn btn-info" onclick="Submit_Click()"> <i class="fa fa-save"></i> บันทึก </a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+
+</div>
+@section Scripts {
+<script>
+    $(function () {
+        $(".select2").select2();
+        var products = [];
+        LoadDataGrid(products);
+        var CustomerID = getUrlParameter('CustomerID');
+      
+
+        $.get("../Contract/GetDataPurchaseData/" + CustomerID)
+ .done(function (result) {
+     console.log(result)
+     var response = result.data[0];
+
+     var i = listproducts.length;
+
+     result.dataProductSelect.forEach(function (element) {
+         i++;
+         element.No = i;
+     });
+
+     $('#gridData').dxDataGrid('instance').option('dataSource', result.dataProductSelect);
+     
+     if (result.success == true) {
+         $("#customerName").html(' <h4> &nbsp;<b>ชื่อลูกค้า : </b>' + response.CustomerName + '</h4>');
+         $("#customerAddress").html('  <p class="text-muted m-l-5">ที่อยู่ : '+response.CustomerAddress1+'</p>');
+         $("#product_name").dxLookup({
+             dataSource: result.dataProduct,
+             displayExpr: 'ProductDetail',
+             valueExpr: 'ProductID',
+             title: 'เลือกสินค้า',
+             placeholder: 'เลือกสินค้า',
+             cancelButtonText: "ยกเลิก",
+             seachPlaceholder:'เลือกสินค้า',
+         });
+
+     } else {
+
+     }
+
+ });
+        $("#product_amount").dxTextBox({
+            placeholder: 'ใส่จำนวน',
+            value:1
+        });
+
+    });
+    var listproducts = new Array();
+    var sumPrice = 0;
+    function AddProduct() {
+        if ($("#product_name").dxLookup("instance").option("value") != null) {
+
+            var lookup = $("#product_name").data("dxLookup");
+            var selectedValue = lookup.option("value");
+
+
+            $.post("../Products/GetListProductCart?CustomerID=" + getUrlParameter('CustomerID') + "&productID=" + $("#product_name").dxLookup("instance").option("value") + "&unit=" + $("#product_amount").dxTextBox('option', 'value'))
+    .done(function (result) {
+        var i = listproducts.length;
+
+        result.data.forEach(function (element) {
+            i++;
+            element.No = i;
+            listproducts.push(element);
+            sumPrice += (element.Unit * element.ProductPrice);
+
+
+        });
+        product_amount
+
+        var theGrid = $('#gridData').dxDataGrid('instance');
+        var sumItem = {
+            totalItems: [
+                 { column: 'ProductPrice_Text', displayFormat: 'รวมเงิน' },
+                 {
+
+                     column: 'ProductPrice',
+                     showInColumn: "TotalPrice",
+                     summaryType: "sum",
+                     customizeText: function (options) {
+
+                         return options.value.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+                     }
+
+                 }
+            ],
+            calculateCustomSummary: function (options) {
+                console.log(options);
+                if (options.name === "SelectedRowsSummary") {
+                    if (options.summaryProcess === "start") {
+                        options.totalValue = 0;
+                    }
+                    if (options.summaryProcess === "calculate") {
+                        if (options.component.isRowSelected(options.value.ID)) {
+                            options.totalValue = options.totalValue + options.value.ProductPrice;
+                            options.totalValue = options.totalValue.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                        }
+                    }
+                }
+            }
+        };
+        theGrid.option('summary', sumItem);
+        theGrid.option('dataSource', listproducts);
+        theGrid.option('height', 300);
+
+
+
+    });
+
+        } else {
+            DevExpress.ui.notify("โปรดเลือกสินค้า !!");
+
+        }
+        
+
+
+    }
+ 
+    function LoadDataGrid(productsdatasource,dataSum) {
+        $("#gridData").dxDataGrid({
+            dataSource: productsdatasource,
+            showColumnLines: true,
+            showRowLines: true,
+            rowAlternationEnabled: true,
+            showBorders: true,
+            height: 300,
+            editing: {
+                mode: "row",
+                allowDeleting: true,
+            },
+            columns: [
+                {
+                    dataField: "No",
+                    caption: "ลำดับที่",
+                    width: 80 + "%",
+                    alignment: 'center',
+                    allowFiltering: false
+                },
+                {
+                    dataField: "ProductName",
+                    caption: "รายการสินค้า",
+                    width: 450 + "%",
+                    alignment: 'left',
+                    allowFiltering: false
+
+                }, {
+                    dataField: "Unit",
+                    caption: "จำนวน(หน่วย)",
+                    width: 160 + "%",
+                    alignment: 'right',
+                },
+              {
+                  dataField: "ProductPrice_Text",
+                  caption: "ราคาต่อหน่วย",
+                  width: 160 + "%",
+                  alignment: 'right',
+                
+
+              },
+             {
+                 dataField: "ProductPrice",
+                 caption: "จำนวนเงิน",
+                 alignment: 'right',
+                 width: 160 + "%",
+                 customizeText: function (options) {
+                     if (options.value !== 0) {
+                         return options.value.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+
+                     }
+                 }
+             }, ],
+            summary: {
+               
+            },
+            onRowUpdated: function (e) {
+                console.log(e);
+            },
+            onRowRemoving: function (e) {
+                console.log(e);
+            },
+            onRowRemoved: function (e) {
+                console.log(e)
+              
+            }
+        });
+    }
+
+    function Submit_Click() {
+
+        if (listproducts.length > 0) {
+            listproducts.forEach(function (element) {
+
+                $.ajax({
+                    url: '../Products/PostAddProduct?CustomerID=' + getUrlParameter('CustomerID') + '&ContractID=0',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(element),
+                    success: function (data) {
+                        console.log('success');
+
+                    },
+                    error: function () {
+                        console.log("error");
+                    }
+                });
+
+
+            });
+        } 
+
+       
+        
+        window.location = "../Customers/Contract?CustomerID=" + getUrlParameter('CustomerID') + '&ContractID=0';
+     
+    }
+    </script>
+}

@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "รายชื่อพนักงานทั้งหมด";
+    ViewBag.MainMenu = "ระบบจัดการพนักงาน";
+    Layout = "~/Views/Shared/_LayoutPartial.cshtml";
+}
+<div class="row bg-title">
+    <!-- .page title -->
+    <div class="col-md-5">
+        <ol class="breadcrumb pull-left">
+            <li><a href="#">@ViewBag.MainMenu</a></li>
+            <li class="active">@ViewBag.Title</li>
+        </ol>
+    </div>
+    <!-- /.page title -->
+</div>
+<div class="row">
+
+    <div class="col-lg-12 ">
+
+        <div class="white-box">
+            <a onclick="NewStaff()" class="btn btn-info pull-right"><i class="fa fa-plus"></i> เพิ่มพนักงาน</a>
+            <h3 class="m-b-0 m-t-0"> <i class="fa fa-list-alt"></i> @ViewBag.Title</h3> <small class="text-muted db"></small>
+            <hr>
+
+            <div id="gridListStaffs"></div>
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("../Scripts/src/manage_staff.js")
+    <script type="text/javascript">
+
+        $(function () {
+
+            Load_DataGrid();
+            
+        });
+
+        function NewStaff() {
+            window.location = "\AddStaff?staffID=0";
+
+        }
+
+    </script>
+}

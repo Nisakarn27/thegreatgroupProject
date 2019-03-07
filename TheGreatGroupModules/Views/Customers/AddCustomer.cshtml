@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = "เพิ่มข้อมูลลูกค้าใหม่";
+    ViewBag.MainMenu = "ระบบจัดการข้อมูลลูกค้า";
+    Layout = "~/Views/Shared/_LayoutPartial.cshtml";
+}
+<div class="row bg-title">
+    <!-- .page title -->
+    <div class="col-md-5">
+        <ol class="breadcrumb pull-left">
+            <li><a href="#">@ViewBag.MainMenu</a></li>
+            <li class="active">@ViewBag.Title</li>
+        </ol>
+    </div>
+
+</div>
+<div class="row">
+    
+    <div class="col-lg-12 ">
+        <div class="white-box">
+
+            <h3 class="m-b-0 m-t-0"> <i class="fa fa-user-plus"></i> @ViewBag.Title</h3> <small class="text-muted db"></small>
+            <hr>
+            <div id="loadIndicator"></div>
+            <form action="\Customers/AddCustomers" id="form-container" method="post">
+                <div id="form"></div>
+                <br />
+                <div id="button" class="pull-right"></div>
+            </form>
+        </div>
+        </div>
+    </div>
+
+<style>
+    .first-group,
+    .second-group {
+        padding: 20px;
+    }
+
+    .second-group {
+        background-color: rgba(191, 191, 191, 0.15);
+    }
+
+    .form-avatar {
+        height: 128px;
+        width: 128px;
+        margin-right: 10px;
+        border: 1px solid #d2d3d5;
+        border-radius: 50%;
+        background-image: url('images/petersmith.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+</style>
+
+@section Scripts {
+@Scripts.Render("../Scripts/src/add_customer.js")
+    <script>
+
+      
+           
+     
+
+    </script>
+}

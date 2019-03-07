@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "ตรวจสอบการเปิด-ปิดบัญชี";
+    ViewBag.MainMenu = "ระบบจัดการข้อมูลลูกค้า";
+    Layout = "~/Views/Shared/_LayoutPartial.cshtml";
+}
+
+<div class="row bg-title">
+    <!-- .page title -->
+    <div class="col-md-5">
+        <ol class="breadcrumb pull-left">
+            <li><a href="#">@ViewBag.MainMenu</a></li>
+            <li class="active">@ViewBag.Title</li>
+        </ol>
+    </div>
+    <!-- /.page title -->
+    <!-- <a href="javascript:history.back();" class="btn btn-default pull-right m-l-20 hidden-xs hidden-sm waves-effect waves-light"><i class="fa fa-mail-reply"></i> ย้อนกลับ</a> -->
+</div>
+
+<div class="row">
+    <div class="col-lg-12 ">
+
+        <div class="white-box">
+
+            <h3 class="m-b-0 m-t-0"> <i class="fa fa-check-square-o"></i> @ViewBag.Title</h3> <small class="text-muted db"></small>
+            <hr>
+
+            <form class="form-horizontal">
+               @*<div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            
+                        </div>
+                    </div>
+                </div>*@
+                
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-3 control-label">รหัสประจำตัวประชาชน</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="CustomerIdCard" placeholder="รหัสประจำตัวประชาชน">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-info waves-effect waves-light m-r-10 pull-in" onclick="SearchStaff()">
+                            <i class="fa fa-search"></i>  ค้นหา
+                        </button>
+                        <button type="button" class="btn btn-default waves-effect waves-light m-r-10" onclick="btnClear()">
+                            <!-- <i class="fa fa-save"></i> -->  ล้างข้อมูล
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+            <div id="toast"></div>
+            <div id="loadIndicator"></div>
+            <h3>รายการสัญญาที่เปิดใช้งานอยู่</h3>    
+            <div id="gridContainer"></div><br>
+            <h3>รายการสัญญาที่ปิดแล้ว</h3>    
+            <div id="gridContainer2"></div>
+
+            <br><br><br><br><br><br><br><br>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <!-- Date Picker Plugin JavaScript -->
+    @Scripts.Render("../Scripts/src/approve_close_account.js")
+
+   
+}

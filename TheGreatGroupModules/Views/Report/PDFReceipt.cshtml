@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "PDFReceipt";
+}
+
+<div id="my-container"></div>
+
+<style>
+    .pdfobject-container {
+        height: 1200px;
+    }
+
+    .pdfobject {
+        border: 1px solid #666;
+    }
+</style>
+@section Scripts {
+
+    <!-- Date Picker Plugin JavaScript -->
+    @Scripts.Render("../Scripts/PDFObject-master/pdfobject.js")
+    <script>PDFObject.embed("/PDF/ReceiptReport_.pdf", "#my-container");</script>
+
+}

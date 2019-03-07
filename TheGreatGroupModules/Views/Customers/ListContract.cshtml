@@ -1,0 +1,307 @@
+﻿@{
+    ViewBag.Title = "รายชื่อสัญญาทั้งหมด";
+    ViewBag.MainMenu = "ระบบจัดการข้อมูลลูกค้า";
+    Layout = "~/Views/Shared/_LayoutPartial.cshtml";
+
+}
+
+<div class="row bg-title">
+    <!-- .page title -->
+    <div class="col-md-5">
+        <ol class="breadcrumb pull-left">
+            <li><a href="#">@ViewBag.MainMenu</a></li>
+            <li class="active">@ViewBag.Title</li>
+        </ol>
+    </div>
+    <a href="javascript:history.back();" class="btn btn-default pull-right m-l-20 hidden-xs hidden-sm waves-effect waves-light"><i class="fa fa-mail-reply"></i> ย้อนกลับ</a>
+
+</div>
+<div class="row">
+    <div class="col-lg-12 ">
+
+        <div class="white-box"> 
+            <a onclick="NewContract()" class="btn btn-info pull-right"><i class="fa fa-shopping-cart"></i> เปิดออร์เดอร์</a>
+            <h3 class="m-b-0 m-t-0"> <i class="fa fa-search"></i> @ViewBag.Title</h3> <small class="text-muted db"></small>
+          
+             <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pull-left">
+                        <address>
+                            <div id="customerName"></div>
+                            <div id="customerAddress"></div>
+                        </address>
+                    </div>
+                    <div class="pull-right text-right">
+                        
+                    </div>
+                </div>
+            </div>
+            <div id="loadIndicator"></div>
+            <div class="demo-container">
+                <div id="gridContainer"></div>
+            </div>
+
+            <br><br><br><br><br><br><br><br>
+        </div>
+    </div>
+</div>
+@section Scripts {
+   
+    <script type="text/javascript">
+
+        $(function () {
+           
+            $("#loadIndicator").dxLoadIndicator({
+                visible: true
+            });
+         
+            LodeDataGrid();
+
+            $.get("../Contract/GetDataPurchaseData/" + getUrlParameter('CustomerID'))
+      .done(function (result) {
+        
+          var response = result.data[0];
+          if (result.success == true) {
+              $("#customerName").html(' <h4> &nbsp;<b>ชื่อลูกค้า : </b>' + response.CustomerName + '</h4>');
+              $("#customerAddress").html('  <p class="text-muted m-l-5">ที่อยู่ : ' + response.CustomerAddress1 + '</p>');
+          } 
+
+      });
+          
+        });
+
+ 
+        function LodeDataGrid() {
+
+            $.get("../Contract/GetListContract?CustomerID=" + getUrlParameter('CustomerID'))
+                .done(function (result) {
+
+                    $("#loadIndicator").dxLoadIndicator({
+                        visible: false
+                    });
+                    var data = [];
+                    result.data.forEach(function (element) {
+
+                        element.ContractExpDate_Text = formatDate(new Date(element.ContractExpDate_Text));
+                        element.ContractCreateDate_Text = formatDate(new Date(element.ContractCreateDate_Text));
+                        element.ContractStartDate_Text = formatDate(new Date(element.ContractStartDate_Text));
+
+                        data.push(element);
+                    });
+
+                    $("#gridContainer").dxDataGrid({
+                        dataSource: data,
+                        showColumnLines: true,
+                        showRowLines: true,
+                        rowAlternationEnabled: true,
+                        showBorders: true,
+
+                        //editing: {
+                        //allowUpdating:true},
+                        searchPanel: {
+                            visible: true,
+                            width: 300,
+                            placeholder: "ค้นหา..."
+                        },
+                        filterRow: {
+                            visible: true,
+                            applyFilter: "auto"
+                        },
+                        export: {
+                            enabled: false,
+                            fileName: "File",
+                        },
+
+                        allowColumnReordering: true,
+                        allowColumnResizing: true,
+                        columnAutoWidth: true,
+                        height: 300,
+                        columnFixing: {
+                            enabled: true
+                        },
+                        columns: [{
+                            dataField: "ContractTimes",
+                            caption: "ครั้งที่",
+                            alignment: 'center',
+                        },  {
+                            dataField: "ContractNumber",
+                            caption: "เลขที่สัญญา",
+                            width: 200 + "%",
+                            alignment: 'center',
+                            allowFiltering: false
+                        }, {
+                            dataField: "ContractCreateDate_Text",
+                            caption: "วันที่ทำสัญญา",
+                            width: 240 + "%",
+                            alignment: 'center',
+                        },
+                        {
+                            dataField: "ContractExpDate_Text",
+                            caption: "วันที่หมดสัญญา",
+                            width: 240 + "%",
+                            alignment: 'center',
+                        },
+                           {
+                               dataField: "ContractPayment",
+                               caption: "มูลค่าสินค้า",
+                               width: 240 + "%",
+                               alignment: 'right',
+                               customizeText: function (options) {
+                                   if (options.value !== 0) {
+                                       return options.value.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+
+                                   }
+                               }
+                        },
+                           {
+                               dataField: "ContractAccountStatusName",
+                               caption: "สภาพบัญชี",
+                               width: 240 + "%",
+                               alignment: 'center',
+                           },
+                         {
+                             dataField: "ContractStatus",
+                             caption: "สถานนะ เปิด/ปิด บัญชี ",
+                             alignment: 'center',
+                             cellTemplate: function (container, options) {
+                                 if (options.key.ContractStatus == 0) {
+
+                                     $("<div>")
+                                  .append("<span class='badge badge-danger'> ปิดใช้งานบัญชี </span>")
+                                  .appendTo(container);
+                                 }
+                                 if (options.key.ContractStatus == 1) {
+
+                                     $("<div>")
+                                  .append("<span class='badge badge-success'>  เปิดใช้งานบัญชี </span>")
+                                  .appendTo(container);
+                                 }
+                             }
+                           },
+
+
+
+                          {
+                              dataField: "Activated",
+                              caption: "สถานะสัญญา",
+                              alignment: 'center',
+                              cellTemplate: function (container, options) {
+                                  if (options.key.Activated == 1) {
+
+                                      $("<div>")
+                                   .append("<span class='badge badge-success'> ใช้งาน </span>")
+                                   .appendTo(container);
+                                  }
+                                  if (options.key.Activated == 0) {
+
+                                      $("<div>")
+                                   .append("<span class='badge badge-danger'> ยกเลิกสัญญา </span>")
+                                   .appendTo(container);
+                                  }
+                              }
+                          },
+
+                             {
+                                 dataField: "ContractID",
+                                 caption: "ดูข้อมูลสัญญา",
+                                 alignment: 'center',
+                                 width: 100,
+                                 allowFiltering: false,
+                                 fixed: true,
+                                 fixedPosition: 'right',
+                                 cellTemplate: function (container, options) {
+                                     $("<div>")
+                                         .append("<a href='\Contract?CustomerID=" + getUrlParameter('CustomerID') + "&ContractID=" + options.key.ContractID + "' title='ข้อมุลสัญญา' class='btn btn-info btn-circle btn-sm' ><i class='fa fa-book'></i></a>")
+                                         .appendTo(container);
+                                 }
+
+                          },
+
+                            
+                             
+                            
+                              {
+                                  dataField: "ContractID",
+                                  caption: "ยกเลิกสัญญา",
+                                  alignment: 'center',
+                                  width: 100,
+                                  allowFiltering: false,
+                                  fixed: true,
+                                  fixedPosition: 'right',
+                                  cellTemplate: function (container, options) {
+                                      var contractobj = options.data;
+                                      $("<div>")
+                                          .append("<a  title='ยกเลิกสัญญา 'onclick='DeteteContract(" + contractobj.ContractID + ")' class='btn btn-danger btn-circle btn-sm' ><i class='fa fa-close'></i></a>")
+                                          .appendTo(container);
+                                  }
+
+                              },
+
+                        ]
+
+                    });
+                });
+
+
+
+        }
+        function NewContract() {
+            window.location = "\Contract?CustomerID=" + getUrlParameter('CustomerID') + "&ContractID=0";
+         
+        }
+
+
+        function DeteteContract(id) {
+            swal({
+                title: "",
+                text: "ต้องการยกเลิกสัญญานี้หรือไม่ ?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#DD6B55',
+                confirmButtonText: 'ตกลง',
+                cancelButtonText: "ยกเลิก",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+        function (isConfirm) {
+
+            if (isConfirm) {
+
+
+                Detete(id)
+
+
+            } else {
+                swal.close();
+            //    e.preventDefault();
+            }
+        });
+
+
+        }
+
+        function Detete(id) {
+            $.ajax({
+                url: '../Contract/ActivatedContract?ContractID=' + id,
+                type: 'GET',
+                contentType: 'application/json',
+                success: function (data) {
+                    if (data.success) {
+
+                        swal("สำเร็จ !", "ยกเลิกสัญญาสำเร็จ !!", "success");
+                    }
+
+                    // เรียก data grid 
+                    LodeDataGrid();
+
+                },
+                error: function () {
+                    console.log("error");
+                }
+            });
+
+
+        }
+    </script>
+}

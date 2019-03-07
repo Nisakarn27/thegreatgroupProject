@@ -1,0 +1,77 @@
+﻿
+
+@{
+    ViewBag.Title = "กำหนดพนักงานตามพื้นที่";
+    ViewBag.MainMenu = "กำหนดพื้นที่ทำงาน";
+    Layout = "~/Views/Shared/_LayoutPartial.cshtml";
+}
+<div class="row bg-title">
+    <!-- .page title -->
+    <div class="col-md-5">
+        <ol class="breadcrumb pull-left">
+            <li><a href="#">@ViewBag.MainMenu</a></li>
+            <li class="active">@ViewBag.Title</li>
+        </ol>
+    </div>
+
+    <a href="javascript:history.back();" class="btn btn-default pull-right m-l-20 hidden-xs hidden-sm waves-effect waves-light">
+        <i class="fa fa-mail-reply"></i> ย้อนกลับ
+    </a>
+
+</div>
+<div class="row">
+
+    <div class="col-lg-12 ">
+
+        <div class="white-box">
+
+            <h3 class="m-b-0 m-t-0"> <i class="fa fa-file-text-o"></i> @ViewBag.Title</h3>
+            <hr>
+
+            <form class="form-horizontal">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-3 control-label">สาย : </label>
+                            <label for="inputEmail3" class="col-sm-2 fa-pull-left control-label" id="zoneId"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-3 control-label">เลือกพนักงาน  : </label>
+                            <div class="col-sm-4">
+                                <select class="form-control select2" id="CustomerID">
+                                    <option value> === เลือกพนักงาน === </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">
+                        <div id="loadIndicator"></div> <button type="button" id="btnSearch" class="btn btn-info waves-effect waves-light m-r-10" onclick="AddStaffZone()">
+                            <!-- <i class="fa fa-search"></i> -->   เพิ่มพนักงาน
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+            <div id="gridContainer"></div>
+            <div id="toast"></div>
+
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    @Scripts.Render("../Scripts/src/manage_staff_zone.js")
+
+
+}

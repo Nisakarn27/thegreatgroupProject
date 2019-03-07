@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "ประวัติการซื้อสินค้า";
+    ViewBag.MainMenu = "ระบบจัดการข้อมูลลูกค้า";
+    Layout = "~/Views/Shared/_LayoutPartial.cshtml";
+}
+
+<div class="row bg-title">
+    <!-- .page title -->
+    <div class="col-md-5">
+        <ol class="breadcrumb pull-left">
+            <li><a href="#">@ViewBag.MainMenu</a></li>
+            <li class="active">@ViewBag.Title</li>
+        </ol>
+    </div>
+    <!-- /.page title -->
+
+</div>
+<div class="row">
+    <div class="col-lg-12 ">
+
+        <div class="white-box">
+
+            <h3 class="m-b-0 m-t-0"> <i class="fa fa-search"></i> @ViewBag.Title</h3> <small class="text-muted db"></small>
+            <hr>
+
+            <form class="form-horizontal">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-3 control-label">ชื่อ</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="CustomerFirstName" placeholder="ชื่อ">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-3 control-label">นามสกุล</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="CustomerLastName" placeholder="นามสกุล">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-3 control-label">เบอร์โทร</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="CustomerMobile" placeholder="เบอร์โทร">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-3 control-label">รหัสประจำตัวประชาชน</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="CustomerIdCard" placeholder="รหัสประจำตัวประชาชน">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-7">
+                        <div class="form-group pull-right">
+                            <button type="button" class="btn btn-info waves-effect waves-light m-r-10" onclick="SearchCustomer()"> ค้นหาข้อมูล</button>
+                            <button type="button" class="btn btn-default waves-effect waves-light m-r-10" onclick="btnClear()">ล้างข้อมูล</button>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </form>
+
+            <div id="loadIndicator"></div>
+            <div class="demo-container" id="gridshow">
+                <div id="gridContainer"></div>
+            </div>
+
+            <br><br><br><br><br><br><br><br>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("../Scripts/src/customer_product.js")
+}
+

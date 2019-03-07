@@ -1,0 +1,159 @@
+﻿@{
+    ViewBag.Title = "ระบบจัดการค่างวดรายวัน";
+    ViewBag.MainMenu = "ระบบจัดการข้อมูลลูกค้า";
+    Layout = "~/Views/Shared/_LayoutPartial.cshtml";
+}
+
+<div class="row bg-title">
+    <!-- .page title -->
+    <div class="col-md-5">
+        <ol class="breadcrumb pull-left">
+            <li><a href="#">@ViewBag.MainMenu</a></li>
+            <li class="active">@ViewBag.Title</li>
+        </ol>
+    </div>
+    <!-- /.page title -->
+</div>
+
+
+<div class="row">
+    <div class="col-lg-12 ">
+
+        <div class="white-box">
+
+            <h3 class="m-b-0 m-t-0"> <i class="fa fa fa-list-ol"></i> @ViewBag.Title</h3> <small class="text-muted db"></small>
+            <hr>
+
+            <form class="form-horizontal">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-3 control-label">เลือกสาย : </label>
+                            <div class="col-sm-9">
+                                <select class="form-control select2" id="zoneid">
+                                    <option value> === เลือกสาย === </option>
+                                </select>
+
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-3 control-label">เลือกพนักงาน : </label>
+                            <div class="col-sm-9">
+                                <select class="form-control select2" id="StaffID">
+                                    <option value> === เลือกพนักงาน === </option>
+                                </select>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-3 control-label">เลือกวันที่ : </label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input type="text" id="DateAsOf" class="form-control" placeholder="วัน/เดือน/ปี" value="@DateTime.Now.ToString("dd/MM/yyyy")">
+                                    <span class="input-group-addon"><i class="icon-calender"></i></span>
+                                </div>
+                            </div>
+
+                            </div>
+                        </div>
+                  
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-info waves-effect waves-light m-r-10" onclick="SearchStaff()">
+                            <i class="fa fa-search"></i>  เรียกดูข้อมูล
+                        </button>
+                        <button type="button" class="btn btn-success waves-effect waves-light m-r-10" onclick="btnSaveData()">
+                            <i class="fa fa-save"></i>  บันทึกข้อมูล
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+            <div id="toast"></div>
+            <div id="loadIndicator"></div>
+            <div class="demo-container" id="gridshow">
+                <div id="gridContainer"></div>
+            </div>
+
+            <br><br><br><br><br><br><br><br>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+     <!-- Date Picker Plugin JavaScript -->
+
+    @Scripts.Render("../Scripts/src/installment.js")
+
+<script>
+    $(function () {
+        $.fn.datepicker.defaults.language = 'th';
+        $('#DateAsOf').datepicker(
+        {
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            todayHighlight: true,
+             changeMonth: true,
+             changeYear: true,
+        }
+        );
+ 
+
+
+        $.get("../Staffs/GetZone")
+.done(function (data) {
+    console.log(data);
+    if (data.success == true) {
+    
+        $.each(data.data, function (key, value) {
+            $("#zoneid").append('<option value="' + value.ID + '"' + ">" + value.Value + "</option>");
+        });
+    } 
+});
+
+        $.get("../Staffs/GetStaffs?staffroleid=5&zoneId=0")
+.done(function (data) {
+  
+    if (data.success == true) {
+
+        $.each(data.data, function (key, value) {
+            $("#StaffID").append('<option value="' + value.ID + '"' + ">" + value.Value + "</option>");
+        });
+    } 
+});
+        $("#zoneid").change(function () {
+
+            $.get("../Staffs/GetStaffs?staffroleid=5&zoneId=" + $("#zoneid").val())
+.done(function (data) {
+    $('#StaffID')
+               .find('option')
+               .remove()
+               .end()
+               .append('<option value="" selected>=== เลือกพนักงาน === </option>');
+
+    if (data.success == true) {
+
+        $.each(data.data, function (key, value) {
+            $("#StaffID").append('<option value="' + value.ID + '"' + ">" + value.Value + "</option>");
+        });
+
+    }
+});
+
+        });
+
+
+    })
+
+
+    </script>
+        }

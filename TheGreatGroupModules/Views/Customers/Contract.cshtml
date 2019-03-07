@@ -1,0 +1,127 @@
+﻿@{
+    ViewBag.Title = "ทำสัญญา";
+    ViewBag.MainMenu = "ระบบจัดการข้อมูลลูกค้า";
+    Layout = "~/Views/Shared/_LayoutPartial.cshtml";
+}
+
+<div class="row bg-title">
+    <!-- .page title -->
+    <div class="col-md-5">
+        <ol class="breadcrumb pull-left">
+            <li><a href="#">@ViewBag.MainMenu</a></li>
+            <li class="active">@ViewBag.Title</li>
+        </ol>
+    </div>
+    <!-- /.page title -->
+    <a onclick="back()" class="btn btn-default pull-right m-l-20 hidden-xs hidden-sm waves-effect waves-light"><i class="fa fa-mail-reply"></i> ย้อนกลับ</a>
+</div>
+<div class="row">
+
+    <div class="col-lg-12 ">
+
+        <div class="white-box">
+
+            <h3 class="m-b-0 m-t-0"> <i class="fa  fa-book"></i> @ViewBag.Title</h3> <small class="text-muted db"></small>
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pull-left">
+                        <div id="loadIndicator"></div>    
+                        <address>
+                            <div id="customerName"></div>
+                            <div id="customerAddress"></div>
+                        </address>
+                    </div>
+                    <div class="pull-right text-right">
+                        <address>
+                            <p><b> การชำระเงิน :</b>   เงินสด</p>
+                        </address>
+                    </div>
+                </div>
+            </div>
+            
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h4 class="m-b-0">  ข้อมูลผู้ซื้อร่วม </h4><br>
+                    <div id="form4"></div><br>
+                     
+                    <hr>
+                    <h4 class="m-b-0">  ข้อมูลผู้ค้ำประกัน </h4><br>
+                    <div id="form1"></div><br>
+                    <div id="form2"></div>
+                        <hr>
+                    <h4 class="m-b-0">  ข้อมูลเงื่อนไขสัญญา </h4><br>
+                    <div id="form"></div>
+                    
+                    <div class="text-right">
+                        <button class="btn btn-info" id="myButton"> <i class="fa fa-save"></i> บันทึก </button>
+                        @*<button class="btn btn-info" id="btnAddContractAmountLast" onclick="AddContractAmountLast()"> <i class="fa fa-save"></i> บันทึกค่างวดแรก </button>*@
+                    </div>
+    <hr>
+    <h4 class="m-b-0">  ข้อมูลสินค้า </h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <br>
+                            <div class="clearfix"></div>
+                            <div class="col-md-6">
+                                <div class="dx-fieldset">
+                                    <div class="dx-field">
+                                        <div class="dx-field-label text-right">เพิ่มสินค้า : </div>
+                                        <div class="dx-field-value"><div class="lookup" id="product_name"></div></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+                                <div class="dx-fieldset">
+                                    <div class="dx-field">
+                                        <div class="dx-field-label text-right">จำนวน : </div>
+                                        <div class="dx-field-value" id="product_amount"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-2">
+
+                                <div class="dx-fieldset">
+                                    <div class="dx-field">
+                                        <div class="dx-field-label"></div>
+                                        <div class="dx-field-value">
+                                            <button class="btn btn-success btn-sm" onclick="AddProduct()"> <i class="fa fa-plus"></i> เพิ่มสินค้า </button>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><br>
+                    <div id="gridData"></div>
+</div>
+                <div id="myPopup"><p>Popup content</p></div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-12">
+
+                    <hr>
+                    <div class="text-right">
+
+                        <a id="print" class="btn btn-default btn-outline" href="javascript:history.back();"> <span><i class="fa fa-mail-reply"></i> ย้อนกลับ</span> </a>
+                       
+                        <button class="btn btn-success" onclick="PrintCard()" id="btnPrintCard"> <i class="fa fa-print"></i> พิมพ์บัตรลูกค้า </button>
+                        <button class="btn btn-success" onclick="PrintReceipt()" id="btnPrintReceipt"> <i class="fa fa-print"></i> พิมพ์ใบเสร็จรับเงิน </button>
+                        <button class="btn btn-success" onclick="PrintContract()" id="btnPrintContract"> <i class="fa fa-print"></i> พิมพ์สัญญา </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+   
+</div>
+@section Scripts {
+@Scripts.Render("../Scripts/src/add_contract.js")
+}

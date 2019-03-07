@@ -1,0 +1,223 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+    ViewBag.MainMenu = "ระบบจัดการสมาชิก";
+    Layout = "~/Views/Shared/_LayoutPartial.cshtml";
+}
+<div class="row bg-title">
+    <!-- .page title -->
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">@ViewBag.Title</h4>
+    </div>
+    <!-- /.page title -->
+
+</div>
+
+@*<!-- .row -->
+    <div class="row">
+        <div class="col-lg-3 col-sm-6 col-xs-12">
+            <div class="white-box analytics-info">
+                <h3 class="box-title">ลูกค้าใหม่ทั้งหมด</h3>
+                <ul class="list-inline two-part">
+                    <li>
+                        <div id="customertsparkdash"></div>
+                    </li>
+
+                    <li class="text-right"><i class="ti-arrow-up text-success"></i> <span class=" text-success" id="NewCustomer">
+
+    </span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-xs-12">
+            <div class="white-box analytics-info">
+                <h3 class="box-title">ยอดขายเพิ่มขึ้น</h3>
+                <ul class="list-inline two-part">
+                    <li>
+                        <div id="sparklinedash2"></div>
+                    </li>
+                    <li class="text-right"><i class="ti-arrow-up text-purple"></i> <span class="text-purple" id="PriceSaleOfWeek"></span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-xs-12">
+            <div class="white-box analytics-info">
+                <h3 class="box-title">จำนวนลูกค้าที่เก็บเงินวันนี้</h3>
+                <ul class="list-inline two-part">
+                    <li>
+                        <div id="sparklinedash4"></div>
+                    </li>
+                    <li class="text-right"><i class="ti-arrow-up text-danger"></i> <span class="text-danger" id="CustomerReceiptCount"> %</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-xs-12">
+            <div class="white-box analytics-info">
+                <h3 class="box-title">จำนวนลูกค้าปิดบัญชี</h3>
+                <ul class="list-inline two-part">
+                    <li>
+                        <div id="sparklinedash3"></div>
+                    </li>
+                    <li class="text-right"><i class="ti-arrow-up text-info"></i> <span class="counter text-info" id="Closejob"></span></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <!--/.row -->*@
+
+<div class="row">
+
+    <div class="col-lg-12 ">
+        <div class="white-box">
+            <div class="row">
+                <div class="col-md-7 col-sm-12 col-lg-8">
+                    <div class="white-box p-b-0">
+                        <div class="row">
+                            <div class="col-xs-8">
+                                <h2 class="font-medium m-t-0">ราคาทองคําวันนี้</h2>
+                                <h5 class="text-muted m-t-0">ประจำวันที่ @DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss")</h5>
+                            </div>
+                        </div>
+
+                        <div class="row minus-margin">
+                            <div class="col-sm-12 col-sm-4 b-t b-r">
+                                <ul class="expense-box">
+                                    <li>
+                                        <div>
+                                            <h2>96.5 %</h2>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-12 col-sm-4  b-t b-r">
+                                <ul class="expense-box">
+                                    <li>
+                                        <div>
+                                            <h2 class="text-danger">รับซื้อ (บาท)</h2>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-12 col-sm-4  b-t">
+                                <ul class="expense-box">
+                                    <li>
+                                        <div>
+                                            <h2 class="text-danger">ขายออก (บาท)</h2>
+                                        </div>
+
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row minus-margin">
+                            <div class="col-sm-12 col-sm-4 b-t b-r">
+                                <ul class="expense-box">
+                                    <li>
+                                        <div>
+                                            <h2>ทองคำแท่ง</h2>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-12 col-sm-4  b-t b-r">
+                                <ul class="expense-box">
+                                    <li class="pull-right text-right">
+                                        <div id="T1">
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-12 col-sm-4  b-t">
+                                <ul class="expense-box">
+                                    <li class="pull-right text-right">
+                                        <div id="T2">
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row minus-margin">
+                            <div class="col-sm-12 col-sm-4 b-t b-r">
+                                <ul class="expense-box">
+                                    <li>
+                                        <div>
+                                            <h2>ทองรูปพรรณ</h2>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-12 col-sm-4  b-t b-r">
+                                <ul class="expense-box">
+                                    <li class="pull-right text-right">
+                                        <div id="T3">
+
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-12 col-sm-4  b-t">
+                                <ul class="expense-box">
+                                    <li class="pull-right text-right">
+                                        <div id="T4">
+
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- col-md-3 -->
+                @*<div class="col-md-5 col-sm-12 col-lg-4">
+                <div class="white-box">
+                    <h3 class="box-title"> <i class="fa fa-user-plus"></i> รายชื่อลูกค้าใหม่ล่าสุดสัปดาห์นี้</h3>
+                    <ul class="list-group">
+                        <li class="list-group-item">นางสมพร มีรัก<span class="badge badge-success">new</span></li>
+                        <li class="list-group-item">นางสุรีย์ มีสุข <span class="badge badge-success">new</span></li>
+                        <li class="list-group-item">นายชัย ดีดี</li>
+                        <li class="list-group-item">นางสาวแสนใจ ใจดี</li>
+                        <li class="list-group-item">นายวิรุธ มีพิรุธ</li>
+                    </ul>
+                </div>
+
+            </div>*@
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+    
+
+
+
+    <!-- /.row -->
+    @section Scripts {
+        @Scripts.Render(@"\Scripts/src/index.js")
+        <script>
+            $(function () {
+
+                var sparklineLogin1 = function () {
+                    $('#customertsparkdash').sparkline([0, 2, 5, 2, 1, 0, 1], {
+                        type: 'bar',
+                        height: '30',
+                        barWidth: '4',
+                        resize: true,
+                        barSpacing: '5',
+                        barColor: '#7ace4c'
+                    });
+                }
+
+                var sparkResize;
+                $(window).on("resize", function (e) {
+                    clearTimeout(sparkResize);
+                    sparkResize = setTimeout(sparklineLogin1, 500);
+                });
+                sparklineLogin1();
+
+            });
+
+
+        </script>
+    }
